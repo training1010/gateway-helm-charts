@@ -1,0 +1,97 @@
+# Replace <sandboxName> with your sandbox name e.g. sandbox2
+# Replace <subDomain> with your cluster sub domain e.g. apimgcp.com
+# Replace <jenkins password>, <nexus password> and <grafana password> with your own
+# Use this file to install umbrella chart, e.g. helm install mychart --name mychart -f override.yaml
+
+apim-gw-cert-manager: &acmeEmail "apim<sandboxName>@gmail.com"      # Email of your google account for your sandbox, e.g. apimsandbox2@gmail.com
+apim-gw-cert-manager: &certDomainName "*.<sandboxName>.<subDomain>" # Domain name of the cert to be generated, e.g. *.sandbox2.apimgcp.com
+apim-gw-cert-manager: &prodCertificateName "apim-prod"     # Define the name of the certificate in your cluster
+apim-gw-cert-manager: &secretName "apim-tls"               # Define the name of the key in your cluster, which is used by ingress later
+apim-gw-cert-manager: &stagingEnabled false                # Generate staging level key
+apim-gw-cert-manager: &prodEnabled true                    # Generate production level key
+apim-gw-cert-manager: null
+
+apim-gw-cicd: &nexusDockerHost "docker.<sandboxName>.<subDomain>"  # Nexus docker repo hostname assigned
+apim-gw-cicd: &nexusHttpHost "nexus.<sandboxName>.<subDomain>"     # Nexus hostname assigned
+apim-gw-cicd: &nexusIp "apim-<sandboxName>-nexus-ip"                # Nexus IP assigned
+apim-gw-cicd: &jenkinsAdminPassword "<jenkins password>"            # Define admin password for Jenkins
+apim-gw-cicd: &nexusAdminPassword "<nexus password>"                # Define admin password for Nexus
+apim-gw-cicd: &jenkinsHostName "jenkins.<sandboxName>.<subDomain>" # Jenkins hostname assigned
+apim-gw-cicd: &jenkinsIp "apim-<sandboxName>-jenkins-ip"            # Jenkins IP assigned
+apim-gw-cicd: null
+
+apim-service-metrics-runtime: &grafanaAdminPassword "<grafana password>"            # Define admin password for grafana
+apim-service-metrics-runtime: &grafanaHost "grafana.<sandboxName>.<subDomain>"     # Grafana hostname assigned
+apim-service-metrics-runtime: &grafanaIP "apim-<sandboxName>-grafana-ip"            # Grafana IP assigned
+apim-service-metrics-runtime: null
+
+apim-logs-runtime: &kibanaHost "kibana.<sandboxName>.<subDomain>/*"   # Kibana hostname assigned
+apim-logs-runtime: &kibanaIp "apim-<sandboxName>-kibana-ip"            # Kibana IP assigned
+apim-logs-runtime: null
+
+
+################################
+# Important: Do NOT make any changes below this point
+################################
+### apim-gw-cert-manager
+################################
+stagingEnabled: *stagingEnabled
+prodEnabled: *prodEnabled
+prodCertificateName: *prodCertificateName
+prodCertificateSecretName: *secretName
+certDomainName: *certDomainName
+acmeEmail: *acmeEmail
+
+################################
+### apim-gw-cicd
+################################
+nexusAdminPassword: *nexusAdminPassword
+sonatype-nexus:
+  nexusProxy:
+    env:
+      nexusDockerHost: *nexusDockerHost
+      nexusHttpHost: *nexusHttpHost
+  ingress:
+    annotations:
+      kubernetes.io/ingress.global-static-ip-name: *nexusIp
+    tls:
+      secretName: *secretName
+
+jenkins:
+  Master:
+    AdminPassword: *jenkinsAdminPassword
+    HostName: *jenkinsHostName
+    Ingress:
+      Annotations:
+        kubernetes.io/ingress.global-static-ip-name: *jenkinsIp
+      TLS:
+        - secretName: *secretName
+          hosts:
+            - *jenkinsHostName
+
+################################
+### apim-service-metrics-runtime
+################################
+grafana:
+  ingress:
+    annotations:
+      kubernetes.io/ingress.global-static-ip-name: *grafanaIP
+    hosts:
+      - *grafanaHost
+    tls:
+      - secretName: *secretName
+        hosts:
+          - *grafanaHost
+  adminPassword: *grafanaAdminPassword
+
+################################
+### apim-logs-runtime
+################################
+kibana:
+  ingress:
+    annotations:
+      kubernetes.io/ingress.global-static-ip-name: *kibanaIp
+    hosts:
+      - *kibanaHost
+    tls:
+      - secretName: *secretName
