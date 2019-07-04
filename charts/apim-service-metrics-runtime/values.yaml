@@ -37,11 +37,11 @@ grafana:
     path: /*
     annotations:
       kubernetes.io/ingress.class: gce
-      kubernetes.io/ingress.global-static-ip-name: "apim-grafana-ip"
+      kubernetes.io/ingress.global-static-ip-name: "grafana-ip"
     hosts:
       - grafana.example.com
     tls:
-      - secretName: apim-grafana-tls
+      - secretName: grafana-tls
         hosts:
           - grafana.example.com
 

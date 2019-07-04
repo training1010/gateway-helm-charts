@@ -12,10 +12,10 @@ sonatype-nexus:
     path: /*
     annotations:
       kubernetes.io/ingress.class: gce
-      kubernetes.io/ingress.global-static-ip-name: "apim-nexus-ip"
+      kubernetes.io/ingress.global-static-ip-name: "nexus-ip"
     tls:
       enabled: true
-      secretName: apim-tls
+      secretName: tls
 
 jenkins:
 
@@ -33,9 +33,9 @@ jenkins:
       Path: /*
       Annotations:
         kubernetes.io/ingress.class: gce
-        kubernetes.io/ingress.global-static-ip-name: "apim-jenkins-ip"
+        kubernetes.io/ingress.global-static-ip-name: "jenkins-ip"
       TLS:
-        - secretName: apim-tls
+        - secretName: tls
           hosts:
             - jenkins.example.com
 
