@@ -1,3 +1,4 @@
+# Replace <cluster name> with your cluster name e.g cluster1
 # Replace <cluster subdomain> with your cluster sub domain e.g. cluster1.example.com or use <dns zone> e.g example.com
 # Replace <jenkins password>, <nexus password> and <grafana password> with your own
 # Use this file to install umbrella chart, e.g. helm install mychart --name mychart -f override.yaml
@@ -12,20 +13,20 @@ apim-gw-cert-manager: null
 
 apim-gw-cicd: &nexusDockerHost "docker.<cluster subdomain>"               # Nexus docker repo hostname assigned
 apim-gw-cicd: &nexusHttpHost "nexus.<cluster subdomain>"                  # Nexus hostname assigned
-apim-gw-cicd: &nexusIp "nexus-ip"                                         # Nexus IP assigned
+apim-gw-cicd: &nexusIp "<cluster name>-nexus-ip"                          # Nexus IP assigned
 apim-gw-cicd: &jenkinsAdminPassword "<jenkins password>"                  # Define admin password for Jenkins
 apim-gw-cicd: &nexusAdminPassword "<nexus password>"                      # Define admin password for Nexus
 apim-gw-cicd: &jenkinsHostName "jenkins.<cluster subdomain>"              # Jenkins hostname assigned
-apim-gw-cicd: &jenkinsIp "jenkins-ip"                                     # Jenkins IP assigned
+apim-gw-cicd: &jenkinsIp "<cluster name>-jenkins-ip"                      # Jenkins IP assigned
 apim-gw-cicd: null
 
 apim-service-metrics-runtime: &grafanaAdminPassword "<grafana password>"  # Define admin password for grafana
 apim-service-metrics-runtime: &grafanaHost "grafana.<cluster subdomain>"  # Grafana hostname assigned
-apim-service-metrics-runtime: &grafanaIP "grafana-ip"                     # Grafana IP assigned
+apim-service-metrics-runtime: &grafanaIP "<cluster name>-grafana-ip"      # Grafana IP assigned
 apim-service-metrics-runtime: null
 
 apim-logs-runtime: &kibanaHost "kibana.<cluster subdomain>/*"             # Kibana hostname assigned
-apim-logs-runtime: &kibanaIp "kibana-ip"                                  # Kibana IP assigned
+apim-logs-runtime: &kibanaIp "<cluster name>-kibana-ip"                   # Kibana IP assigned
 apim-logs-runtime: null
 
 
