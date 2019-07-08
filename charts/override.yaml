@@ -1,5 +1,5 @@
-# Replace <sandboxName> with your sandbox name e.g. sandbox2
-# Replace <subDomain> with your cluster sub domain e.g. apimgcp.com
+# Replace <cluster name> with your cluster name e.g cluster1
+# Replace <cluster subdomain> with your cluster sub domain e.g. cluster1.example.com or use <dns zone> e.g example.com
 # Replace <jenkins password>, <nexus password> and <grafana password> with your own
 # Use this file to install umbrella chart, e.g. helm install mychart --name mychart -f override.yaml
 
@@ -26,7 +26,7 @@ apim-service-metrics-runtime: &grafanaIP "apim-sandbox1-grafana-ip"            #
 apim-service-metrics-runtime: null
 
 apim-logs-runtime: &kibanaHost "kibana.sandbox1.apimgcp.com/*"   # Kibana hostname assigned
-apim-logs-runtime: &kibanaIp "apim-sandbox1-kibana-ip"            # Kibana IP assigned
+apim-logs-runtime: &kibanaIp ":q!kibana-ip"            # Kibana IP assigned
 apim-logs-runtime: null
 
 
